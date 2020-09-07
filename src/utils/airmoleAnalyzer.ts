@@ -1,6 +1,7 @@
 
 import cheerio from 'cheerio'
 import fs from 'fs'
+import { Analyzer } from './crowller'
 
 interface Content {
   title: string,
@@ -16,7 +17,18 @@ interface ContentResult {
   content: Content[]
 }
 
-class AirmoleAnalyzer {
+class AirmoleAnalyzer implements Analyzer {
+  private static instance: AirmoleAnalyzer
+  // 单例模式
+  public static getInstance () {
+    if (!AirmoleAnalyzer.instance) {
+      AirmoleAnalyzer.instance = new AirmoleAnalyzer()
+    }
+    return AirmoleAnalyzer.instance
+  }
+
+  private constructor() {}
+
   // 处理数据
   getJsonInfo (html: string) {
     const $ = cheerio.load(html)

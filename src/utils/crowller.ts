@@ -1,7 +1,6 @@
 import fs from 'fs'
 import path from 'path'
 import superagent from 'superagent'
-import AirmoleAnalyzer from './airmoleAnalyzer'
 
 interface Content {
   title: string,
@@ -17,7 +16,7 @@ interface ContentResult {
   content: Content[]
 }
 
-interface Analyzer {
+export interface Analyzer {
   analyze: (html: string, filePath: string) => string
 }
 
@@ -31,7 +30,7 @@ class Crowller {
 
   async initSpiderProcess () {
     const html = await this.getRawHtml()
-    const result = analyzer.analyze(html, this.filePath)
+    const result = this.analyzer.analyze(html, this.filePath)
     this.writeFile(JSON.stringify(result))
   }
 
@@ -48,8 +47,4 @@ class Crowller {
   }
 }
 
-const url = 'http://blog.airmole.cn/'
-const analyzer = new AirmoleAnalyzer()
-
-const croller = new Crowller(analyzer, url)
-croller.initSpiderProcess()
+export default Crowller
