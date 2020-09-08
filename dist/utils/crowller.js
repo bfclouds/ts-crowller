@@ -47,19 +47,20 @@ var Crowller = /** @class */ (function () {
         this.analyzer = analyzer;
         this.url = url;
         // private url = 'http://blog.airmole.cn/'
-        this.filePath = path_1.default.resolve(__dirname, '../data/content.json');
+        this.filePath = path_1.default.resolve(__dirname, '../../data/content.json');
     }
     Crowller.prototype.initSpiderProcess = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var html, result;
+            var html, result, res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getRawHtml()];
                     case 1:
                         html = _a.sent();
                         result = this.analyzer.analyze(html, this.filePath);
-                        this.writeFile(JSON.stringify(result));
-                        return [2 /*return*/];
+                        console.log(JSON.stringify(result));
+                        res = this.writeFile(JSON.stringify(result));
+                        return [2 /*return*/, [res, JSON.stringify(result)]];
                 }
             });
         });
@@ -73,6 +74,7 @@ var Crowller = /** @class */ (function () {
                     case 0: return [4 /*yield*/, superagent_1.default.get(this.url)];
                     case 1:
                         html = _a.sent();
+                        console.log(html.text);
                         return [2 /*return*/, html.text];
                 }
             });
@@ -80,9 +82,12 @@ var Crowller = /** @class */ (function () {
     };
     // 保存数据
     Crowller.prototype.writeFile = function (content) {
-        console.log('打印');
         fs_1.default.writeFileSync(this.filePath, content);
     };
     return Crowller;
 }());
+// const url = 'http://blog.airmole.cn/'
+// const airmoleAnalyzer = AirmoleAnalyzer.getInstance()
+// const crowller = new Crowller(airmoleAnalyzer, url)
+// const resD = crowller.initSpiderProcess()
 exports.default = Crowller;

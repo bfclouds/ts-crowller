@@ -1,5 +1,4 @@
-import path from 'path'
-import fs from 'fs'
+
 import { Router, Request, Response, NextFunction } from 'express'
 import Crowller from './utils/crowller'
 import AirmoleAnalyzer from './utils/airmoleAnalyzer'
@@ -22,23 +21,23 @@ const checkLogin = (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
-router.get('/getData', checkLogin, (req: Request, res: Response) => {
-  const url = 'http://blog.airmole.cn/'
-  const airmoleAnalyzer = AirmoleAnalyzer.getInstance()
-  const crowller = new Crowller(airmoleAnalyzer, url)
-  crowller.initSpiderProcess()
-  res.send('get data')
-})
+// router.get('/getData', checkLogin, (req: Request, res: Response) => {
+//   const url = 'http://blog.airmole.cn/'
+//   const airmoleAnalyzer = AirmoleAnalyzer.getInstance()
+//   const crowller = new Crowller(airmoleAnalyzer, url)
+//   crowller.initSpiderProcess()
+//   res.send('get data')
+// })
 
-router.get('/showData', checkLogin, (req: Request, res: Response) => {
-  try {
-    const position = path.resolve(__dirname, '../data/content.json')
-    const result = fs.readFileSync(position, 'utf8')
-    res.json(getResponseData(JSON.parse(result)))
-  } catch (e) {
-    res.json(getResponseData(null, '数据不存在'))
-  }
-})
+// router.get('/showData', checkLogin, (req: Request, res: Response) => {
+//   try {
+//     const position = path.resolve(__dirname, '../data/content.json')
+//     const result = fs.readFileSync(position, 'utf8')
+//     res.json(getResponseData(JSON.parse(result)))
+//   } catch (e) {
+//     res.json(getResponseData(null, '数据不存在'))
+//   }
+// })
 
 router.post('/login', (req: RequestWithBody, res: Response) => {
   const { password } = req.body
@@ -55,11 +54,11 @@ router.post('/login', (req: RequestWithBody, res: Response) => {
   }
 })
 
-router.get('/logout', (req: RequestWithBody, res: Response) => {
-  if (req.session) {
-    req.session.login = false
-  }
-  res.json(getResponseData(true))
-})
+// router.get('/logout', (req: RequestWithBody, res: Response) => {
+//   if (req.session) {
+//     req.session.login = false
+//   }
+//   res.json(getResponseData(true))
+// })
 
 export default router

@@ -1,13 +1,6 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var path_1 = __importDefault(require("path"));
-var fs_1 = __importDefault(require("fs"));
 var express_1 = require("express");
-var crowller_1 = __importDefault(require("./utils/crowller"));
-var airmoleAnalyzer_1 = __importDefault(require("./utils/airmoleAnalyzer"));
 var util_1 = require("./utils/util");
 var router = express_1.Router();
 var checkLogin = function (req, res, next) {
@@ -19,23 +12,22 @@ var checkLogin = function (req, res, next) {
         res.json(util_1.getResponseData(null, '请先登录'));
     }
 };
-router.get('/getData', checkLogin, function (req, res) {
-    var url = 'http://blog.airmole.cn/';
-    var airmoleAnalyzer = airmoleAnalyzer_1.default.getInstance();
-    var crowller = new crowller_1.default(airmoleAnalyzer, url);
-    crowller.initSpiderProcess();
-    res.send('get data');
-});
-router.get('/showData', checkLogin, function (req, res) {
-    try {
-        var position = path_1.default.resolve(__dirname, '../data/content.json');
-        var result = fs_1.default.readFileSync(position, 'utf8');
-        res.json(util_1.getResponseData(JSON.parse(result)));
-    }
-    catch (e) {
-        res.json(util_1.getResponseData(null, '数据不存在'));
-    }
-});
+// router.get('/getData', checkLogin, (req: Request, res: Response) => {
+//   const url = 'http://blog.airmole.cn/'
+//   const airmoleAnalyzer = AirmoleAnalyzer.getInstance()
+//   const crowller = new Crowller(airmoleAnalyzer, url)
+//   crowller.initSpiderProcess()
+//   res.send('get data')
+// })
+// router.get('/showData', checkLogin, (req: Request, res: Response) => {
+//   try {
+//     const position = path.resolve(__dirname, '../data/content.json')
+//     const result = fs.readFileSync(position, 'utf8')
+//     res.json(getResponseData(JSON.parse(result)))
+//   } catch (e) {
+//     res.json(getResponseData(null, '数据不存在'))
+//   }
+// })
 router.post('/login', function (req, res) {
     var password = req.body.password;
     var isLogin = req.session ? req.session.login : undefined;
@@ -52,10 +44,10 @@ router.post('/login', function (req, res) {
         }
     }
 });
-router.get('/logout', function (req, res) {
-    if (req.session) {
-        req.session.login = false;
-    }
-    res.json(util_1.getResponseData(true));
-});
+// router.get('/logout', (req: RequestWithBody, res: Response) => {
+//   if (req.session) {
+//     req.session.login = false
+//   }
+//   res.json(getResponseData(true))
+// })
 exports.default = router;
